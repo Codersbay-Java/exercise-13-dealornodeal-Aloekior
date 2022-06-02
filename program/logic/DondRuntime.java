@@ -11,6 +11,7 @@ public class DondRuntime {
     private static double bankOffer = 0;
 
     public DondRuntime() {
+        System.out.println("Deal or no Deal?");
         RunGame();
     }
 
@@ -28,7 +29,7 @@ public class DondRuntime {
                 rounds[i]--;
                 printRemainingCases();
             }
-            double bankOffer = getBankOffer(i + 1);
+            bankOffer = getBankOffer(i + 1);
 
             System.out.println("The bank offers $" + bankOffer + " for your case — DEAL OR NO DEAL? (Enter 'DEAL' or press any button)");
             if (scanner.nextLine().equalsIgnoreCase("deal")) {
@@ -49,7 +50,6 @@ public class DondRuntime {
             Collections.shuffle(shuffled);
             values = shuffled.toArray(new Double[0]);
         }
-
         for (int i = 0; i < values.length; i++) {
             suitcases.put(i + 1, values[i]);
         }
@@ -110,8 +110,8 @@ public class DondRuntime {
     }
 
     private static void finale(boolean bankDeal) {
-        Integer lastCase = (Integer) suitcases.keySet().stream().toArray()[0];
-        System.out.println("Case [" + lastCase + "] contained: $" + removeCase(lastCase));
+        int lastCase = (int) suitcases.keySet().toArray()[0];
+        System.out.println("The last Case contained: $" + removeCase(lastCase));
         if (bankDeal) {
             System.out.println("Congratulations, you accepted the banks offer of $" + bankOffer);
         }
