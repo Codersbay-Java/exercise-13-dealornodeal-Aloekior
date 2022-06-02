@@ -21,14 +21,14 @@ public class DondRuntime {
         playerValue = removeCase(userCase);
         printRemainingCases();
 
-        for (int i = 1; i < rounds.length; i++) {
-            while (rounds[i - 1] > 0) {
+        for (int i = 0; i < rounds.length; i++) {
+            while (rounds[i] > 0) {
                 int caseToRemove = userSelection();
                 System.out.println("Case [" + caseToRemove + "] contained: $" + removeCase(caseToRemove));
-                rounds[i - 1]--;
+                rounds[i]--;
                 printRemainingCases();
             }
-            double bankOffer = getBankOffer(i);
+            double bankOffer = getBankOffer(i + 1);
 
             System.out.println("The bank offers $" + bankOffer + " for your case — DEAL OR NO DEAL? (Enter 'DEAL' or press any button)");
             if (scanner.nextLine().equalsIgnoreCase("deal")) {
@@ -41,12 +41,10 @@ public class DondRuntime {
     }
 
     private static void createSuitcases() {
-        boolean debug = debugSetup();
-
         Double[] values = {0.01, 1d, 5d, 10d, 25d, 50d, 75d, 100d, 200d, 300d, 400d, 500d, 750d, 1000d, 5000d,
                 10000d, 25000d, 50000d, 75000d, 100000d, 200000d, 300000d, 400000d, 500000d, 750000d, 1000000d};
 
-        if (!debug) {
+        if (!debugSetup()) {
             List<Double> shuffled = new ArrayList<>(Arrays.stream(values).toList());
             Collections.shuffle(shuffled);
             values = shuffled.toArray(new Double[0]);
@@ -72,7 +70,7 @@ public class DondRuntime {
         for (Double v : suitcases.values()) {
             totalValue += v;
         }
-        return Math.round(totalValue / suitcases.size() * rounds[currentRound] / 10);
+        return Math.round(totalValue / suitcases.size() * currentRound / 10);
     }
 
     private static int userSelection() {
@@ -112,6 +110,8 @@ public class DondRuntime {
     }
 
     private static void finale(boolean bankDeal) {
+        Integer lastCase = (Integer) suitcases.keySet().stream().toArray()[0];
+        System.out.println("Case [" + lastCase + "] contained: $" + removeCase(lastCase));
         if (bankDeal) {
             System.out.println("Congratulations, you accepted the banks offer of $" + bankOffer);
         }
